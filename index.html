@@ -9,7 +9,7 @@
 	<link rel="manifest" href="appmanifest.json" />
 	
 	<!-- Allow fullscreen mode on iOS devices. (These are Apple specific meta tags.) -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<link rel="apple-touch-icon" sizes="256x256" href="icon-256.png" />
@@ -26,9 +26,13 @@
 			margin: 0;
 		}
 		html, body {
+			width: 100%;
+			height: 100%;
+			min-height: 100dvh;
 			background: #000;
 			color: #fff;
 			overflow: hidden;
+			overscroll-behavior: none;
 			touch-action: none;
 			-ms-touch-action: none;
 		}
@@ -37,14 +41,196 @@
 			touch-action: none;
 			-ms-touch-action: none;
 		}
+		#custom-loader {
+			position: fixed;
+			inset: 0;
+			z-index: 9999;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			pointer-events: none;
+			background:
+				radial-gradient(circle at 30% 20%, rgba(132, 255, 83, 0.22), transparent 28%),
+				radial-gradient(circle at 70% 70%, rgba(255, 222, 77, 0.2), transparent 30%),
+				linear-gradient(135deg, #101508 0%, #17210f 48%, #070907 100%);
+			color: #f6ffd6;
+			font-family: Georgia, "Times New Roman", serif;
+			transition: opacity 0.55s ease, visibility 0.55s ease;
+		}
+		#custom-loader.is-hidden {
+			opacity: 0;
+			visibility: hidden;
+		}
+		.custom-loader-card {
+			width: min(520px, 86vw);
+			padding: 34px 30px;
+			border: 2px solid rgba(224, 255, 101, 0.35);
+			border-radius: 26px;
+			background: rgba(7, 10, 7, 0.72);
+			box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+			text-align: center;
+		}
+		.custom-loader-logo {
+			width: 86px;
+			height: 86px;
+			margin-bottom: 18px;
+			image-rendering: pixelated;
+			animation: loader-bob 1.6s ease-in-out infinite;
+		}
+		.custom-loader-title {
+			margin-bottom: 8px;
+			font-size: clamp(42px, 10vw, 78px);
+			line-height: 0.9;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			text-shadow: 0 0 22px rgba(224, 255, 101, 0.38);
+		}
+		.custom-loader-subtitle {
+			margin-bottom: 24px;
+			color: #d7e99c;
+			font-size: 16px;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+		}
+		.custom-loader-bar {
+			height: 12px;
+			overflow: hidden;
+			border: 1px solid rgba(246, 255, 214, 0.34);
+			border-radius: 999px;
+			background: rgba(246, 255, 214, 0.12);
+		}
+		.custom-loader-fill {
+			width: 45%;
+			height: 100%;
+			border-radius: inherit;
+			background: linear-gradient(90deg, #a8ff55, #fff06b, #a8ff55);
+			animation: loader-slide 1.2s ease-in-out infinite;
+		}
+		.custom-loader-hint {
+			margin-top: 18px;
+			color: rgba(246, 255, 214, 0.72);
+			font-size: 14px;
+		}
+		.mobile-controls {
+			position: fixed;
+			inset: auto 0 calc(16px + env(safe-area-inset-bottom)) 0;
+			z-index: 9000;
+			display: none;
+			align-items: flex-end;
+			justify-content: space-between;
+			padding: 0 calc(18px + env(safe-area-inset-right)) 0 calc(18px + env(safe-area-inset-left));
+			pointer-events: none;
+		}
+		.mobile-controls-group {
+			display: flex;
+			gap: 14px;
+			pointer-events: auto;
+		}
+		.mobile-control-button {
+			min-width: 72px;
+			height: 72px;
+			border: 2px solid rgba(246, 255, 214, 0.38);
+			border-radius: 22px;
+			background: rgba(7, 10, 7, 0.58);
+			box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+			color: #f6ffd6;
+			font: 700 14px/1 Georgia, "Times New Roman", serif;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			touch-action: none;
+			user-select: none;
+			-webkit-user-select: none;
+			-webkit-tap-highlight-color: transparent;
+		}
+		.mobile-control-button.is-pressed {
+			background: rgba(168, 255, 85, 0.32);
+			border-color: rgba(224, 255, 101, 0.82);
+			color: #ffffff;
+			transform: translateY(2px) scale(0.98);
+		}
+		.mobile-control-jump {
+			min-width: 104px;
+			border-radius: 999px;
+		}
+		@media (pointer: coarse), (max-width: 760px) {
+			.mobile-controls {
+				display: flex;
+			}
+		}
+		@media (orientation: landscape) and (max-height: 520px) {
+			.mobile-controls {
+				inset-bottom: calc(10px + env(safe-area-inset-bottom));
+				padding-right: calc(14px + env(safe-area-inset-right));
+				padding-left: calc(14px + env(safe-area-inset-left));
+			}
+			.mobile-controls-group {
+				gap: 10px;
+			}
+			.mobile-control-button {
+				min-width: 62px;
+				height: 62px;
+				border-radius: 18px;
+				font-size: 12px;
+			}
+			.mobile-control-jump {
+				min-width: 92px;
+			}
+		}
+		@media (orientation: portrait) and (max-width: 420px) {
+			.mobile-controls {
+				inset-bottom: calc(20px + env(safe-area-inset-bottom));
+				padding-right: calc(14px + env(safe-area-inset-right));
+				padding-left: calc(14px + env(safe-area-inset-left));
+			}
+			.mobile-controls-group {
+				gap: 10px;
+			}
+			.mobile-control-button {
+				min-width: 64px;
+				height: 64px;
+				border-radius: 20px;
+				font-size: 12px;
+			}
+			.mobile-control-jump {
+				min-width: 92px;
+			}
+		}
+		@keyframes loader-bob {
+			0%, 100% { transform: translateY(0) rotate(-2deg); }
+			50% { transform: translateY(-10px) rotate(2deg); }
+		}
+		@keyframes loader-slide {
+			0% { transform: translateX(-110%); }
+			100% { transform: translateX(245%); }
+		}
     </style>
 	
 
 </head> 
  
-<body> 
+<body>
 	<div id="fb-root"></div>
-	
+	<div id="custom-loader" aria-live="polite">
+		<div class="custom-loader-card">
+			<img class="custom-loader-logo" src="loading-logo.png" alt="" />
+			<div class="custom-loader-title">Gribok</div>
+			<div class="custom-loader-subtitle">Loading mycelium</div>
+			<div class="custom-loader-bar">
+				<div class="custom-loader-fill"></div>
+			</div>
+			<div class="custom-loader-hint">WASD or arrows to move, Space to jump</div>
+		</div>
+	</div>
+	<div class="mobile-controls" aria-label="Touch controls">
+		<div class="mobile-controls-group">
+			<button class="mobile-control-button" type="button" data-key-code="37" aria-label="Move left">Left</button>
+			<button class="mobile-control-button" type="button" data-key-code="39" aria-label="Move right">Right</button>
+		</div>
+		<div class="mobile-controls-group">
+			<button class="mobile-control-button mobile-control-jump" type="button" data-key-code="38" aria-label="Jump">Jump</button>
+		</div>
+	</div>
+
 	<script>
 	// Issue a warning if trying to preview an exported project on disk.
 	(function(){
@@ -86,11 +272,254 @@
 	<script src="c2runtime.js"></script>
 
     <script>
+		(function installWasdControls() {
+			var keyMap = {
+				65: { keyCode: 37, key: "ArrowLeft", code: "ArrowLeft" },
+				87: { keyCode: 38, key: "ArrowUp", code: "ArrowUp" },
+				68: { keyCode: 39, key: "ArrowRight", code: "ArrowRight" },
+				83: { keyCode: 40, key: "ArrowDown", code: "ArrowDown" },
+				32: { keyCode: 38, key: "ArrowUp", code: "ArrowUp" },
+				97: { keyCode: 37, key: "ArrowLeft", code: "ArrowLeft" },
+				119: { keyCode: 38, key: "ArrowUp", code: "ArrowUp" },
+				100: { keyCode: 39, key: "ArrowRight", code: "ArrowRight" },
+				115: { keyCode: 40, key: "ArrowDown", code: "ArrowDown" }
+			};
+
+			function isTypingTarget(target) {
+				var tagName = target && target.tagName;
+				return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT" || target && target.isContentEditable;
+			}
+
+			var originalFix = jQuery.event.fix;
+
+			jQuery.event.fix = function (originalEvent) {
+				var event = originalFix.call(this, originalEvent);
+				var mapped = keyMap[event.which || event.keyCode];
+
+				if (mapped && (event.type === "keydown" || event.type === "keyup") && !event.altKey && !event.ctrlKey && !event.metaKey && !isTypingTarget(event.target)) {
+					event.which = mapped.keyCode;
+					event.keyCode = mapped.keyCode;
+					event.key = mapped.key;
+					event.code = mapped.code;
+				}
+
+				return event;
+			};
+
+			function eventWithMappedKey(event, mapped) {
+				return {
+					which: mapped.keyCode,
+					keyCode: mapped.keyCode,
+					preventDefault: function () {
+						if (event.preventDefault)
+							event.preventDefault();
+					}
+				};
+			}
+
+			function patchConstructKeyboardControls(proto) {
+				var originalKeyDown = proto.Qh;
+				var originalKeyUp = proto.Rh;
+
+				proto.Qh = function (event) {
+					var mapped = keyMap[event.which || event.keyCode];
+					return originalKeyDown.call(this, mapped ? eventWithMappedKey(event, mapped) : event);
+				};
+
+				proto.Rh = function (event) {
+					var mapped = keyMap[event.which || event.keyCode];
+					return originalKeyUp.call(this, mapped ? eventWithMappedKey(event, mapped) : event);
+				};
+			}
+
+			function patchPlatformJumpForgiveness(proto) {
+				var coyoteTime = 0.14;
+				var originalKeyDown = proto.Qh;
+				var originalKeyUp = proto.Rh;
+				var originalTick = proto.wp;
+
+				function getMappedKeyCode(event) {
+					var keyCode = event.which || event.keyCode;
+					var mapped = keyMap[keyCode];
+					return mapped ? mapped.keyCode : keyCode;
+				}
+
+				function isJumpKey(event) {
+					return getMappedKeyCode(event) === 38;
+				}
+
+				function canStartJump(behavior) {
+					var oldX = behavior.c.x;
+					var oldY = behavior.c.y;
+
+					behavior.c.x -= behavior.ya;
+					behavior.c.y -= behavior.za;
+					behavior.c.A();
+
+					var blocked = behavior.b.Oa(behavior.c);
+
+					behavior.c.x = oldX;
+					behavior.c.y = oldY;
+					behavior.c.A();
+
+					return !blocked;
+				}
+
+				function startCoyoteJump(behavior) {
+					if (!canStartJump(behavior))
+						return false;
+
+					behavior.Gf = behavior.Gl;
+					behavior.Rc = 2;
+					behavior.m = -behavior.Fe;
+					behavior.ig = true;
+					behavior.Xg = true;
+					behavior.__coyoteLeft = 0;
+
+					if (behavior.b && behavior.b.trigger && window.Y && Y.prototype && Y.prototype.k)
+						behavior.b.trigger(Y.prototype.k.$q, behavior.c);
+
+					return true;
+				}
+
+				proto.Qh = function (event) {
+					if (isJumpKey(event) && !this.Kg && !this.ig && this.__coyoteLeft > 0)
+						startCoyoteJump(this);
+
+					return originalKeyDown.call(this, event);
+				};
+
+				proto.Rh = function (event) {
+					return originalKeyUp.call(this, event);
+				};
+
+				proto.wp = function () {
+					var dt = this.b.eh(this.c);
+					var onGround = !!this.mo();
+
+					if (onGround)
+						this.__coyoteLeft = coyoteTime;
+					else
+						this.__coyoteLeft = Math.max((this.__coyoteLeft || 0) - dt, 0);
+
+					originalTick.call(this);
+
+					if (this.Kg)
+						this.__coyoteLeft = coyoteTime;
+				};
+			}
+
+			if (window.sc && sc.prototype && sc.prototype.Ga)
+				patchConstructKeyboardControls(sc.prototype.Ga.prototype);
+
+			if (window.Y && Y.prototype && Y.prototype.Ga) {
+				patchConstructKeyboardControls(Y.prototype.Ga.prototype);
+				patchPlatformJumpForgiveness(Y.prototype.Ga.prototype);
+			}
+		})();
+
+		(function installMobileControls() {
+			var activeKeys = {};
+
+			function makeKeyEvent(type, keyCode) {
+				var event = jQuery.Event(type);
+				event.which = keyCode;
+				event.keyCode = keyCode;
+				return event;
+			}
+
+			function setButtonPressed(button, pressed) {
+				if (pressed)
+					button.className += button.className.indexOf("is-pressed") === -1 ? " is-pressed" : "";
+				else
+					button.className = button.className.replace(/\bis-pressed\b/g, "").replace(/\s+/g, " ").replace(/^\s|\s$/g, "");
+			}
+
+			function pressKey(button) {
+				var keyCode = Number(button.getAttribute("data-key-code"));
+
+				if (activeKeys[keyCode])
+					return;
+
+				activeKeys[keyCode] = true;
+				setButtonPressed(button, true);
+				jQuery(document).trigger(makeKeyEvent("keydown", keyCode));
+			}
+
+			function releaseKey(button) {
+				var keyCode = Number(button.getAttribute("data-key-code"));
+
+				if (!activeKeys[keyCode])
+					return;
+
+				activeKeys[keyCode] = false;
+				setButtonPressed(button, false);
+				jQuery(document).trigger(makeKeyEvent("keyup", keyCode));
+			}
+
+			function releaseAllKeys() {
+				var buttons = document.querySelectorAll(".mobile-control-button");
+
+				for (var i = 0; i < buttons.length; i++)
+					releaseKey(buttons[i]);
+			}
+
+			function bindButton(button) {
+				button.addEventListener("pointerdown", function (event) {
+					event.preventDefault();
+					button.setPointerCapture && button.setPointerCapture(event.pointerId);
+					pressKey(button);
+				});
+
+				button.addEventListener("pointerup", function (event) {
+					event.preventDefault();
+					releaseKey(button);
+				});
+
+				button.addEventListener("pointercancel", function (event) {
+					event.preventDefault();
+					releaseKey(button);
+				});
+
+				button.addEventListener("lostpointercapture", function () {
+					releaseKey(button);
+				});
+			}
+
+			jQuery(document).ready(function () {
+				var buttons = document.querySelectorAll(".mobile-control-button");
+
+				for (var i = 0; i < buttons.length; i++)
+					bindButton(buttons[i]);
+			});
+
+			window.addEventListener("blur", releaseAllKeys);
+			document.addEventListener("visibilitychange", function () {
+				if (document.hidden || document.webkitHidden || document.mozHidden || document.msHidden)
+					releaseAllKeys();
+			});
+		})();
+
+		function hideCustomLoadingScreen() {
+			var loader = document.getElementById("custom-loader");
+
+			if (!loader || loader.className.indexOf("is-hidden") !== -1)
+				return;
+
+			loader.className += " is-hidden";
+
+			setTimeout(function () {
+				if (loader.parentNode)
+					loader.parentNode.removeChild(loader);
+			}, 700);
+		}
+
 		// Start the Construct 2 project running on window load.
 		jQuery(document).ready(function ()
-		{			
+		{
 			// Create new runtime using the c2canvas
 			cr_createRuntime("c2canvas");
+			setTimeout(hideCustomLoadingScreen, 4000);
 		});
 		
 		// Pause and resume on page becoming visible/invisible
@@ -115,9 +544,21 @@
 		// This registers the service worker which caches resources for offline support.
 		window.C2_RegisterSW = function C2_RegisterSW()
 		{
+			hideCustomLoadingScreen();
+
 			if (!navigator.serviceWorker)
 				return;		// no SW support, ignore call
-			
+
+			if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+			{
+				navigator.serviceWorker.getRegistration("./").then(function (reg)
+				{
+					if (reg)
+						reg.unregister();
+				});
+				return;
+			}
+
 			try {
 				navigator.serviceWorker.register("sw.js", { scope: "./" })
 				.then(function (reg)
@@ -133,4 +574,4 @@
 		};
     </script>
 </body> 
-</html> 
+</html>
