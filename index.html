@@ -50,11 +50,11 @@
 			justify-content: center;
 			pointer-events: none;
 			background:
-				radial-gradient(circle at 30% 20%, rgba(132, 255, 83, 0.22), transparent 28%),
-				radial-gradient(circle at 70% 70%, rgba(255, 222, 77, 0.2), transparent 30%),
-				linear-gradient(135deg, #101508 0%, #17210f 48%, #070907 100%);
-			color: #f6ffd6;
-			font-family: Georgia, "Times New Roman", serif;
+				radial-gradient(circle at 20% 18%, rgba(146, 58, 44, 0.15), transparent 24%),
+				radial-gradient(circle at 82% 72%, rgba(103, 45, 38, 0.16), transparent 28%),
+				linear-gradient(145deg, #505355 0%, #383b3e 45%, #232527 100%);
+			color: #ffffff;
+			font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 			transition: opacity 0.55s ease, visibility 0.55s ease;
 		}
 		#custom-loader.is-hidden {
@@ -63,53 +63,71 @@
 		}
 		.custom-loader-card {
 			width: min(520px, 86vw);
-			padding: 34px 30px;
-			border: 2px solid rgba(224, 255, 101, 0.35);
-			border-radius: 26px;
-			background: rgba(7, 10, 7, 0.72);
-			box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+			padding: 30px 28px;
+			border: 1px solid rgba(132, 60, 50, 0.72);
+			border-radius: 20px;
+			background:
+				linear-gradient(180deg, rgba(53, 55, 58, 0.92) 0%, rgba(34, 36, 39, 0.94) 100%);
+			box-shadow: 0 18px 54px rgba(0, 0, 0, 0.34);
 			text-align: center;
 		}
 		.custom-loader-logo {
-			width: 86px;
-			height: 86px;
-			margin-bottom: 18px;
+			width: 76px;
+			height: 76px;
+			margin: 8px 0 16px;
 			image-rendering: pixelated;
-			animation: loader-bob 1.6s ease-in-out infinite;
+			animation: loader-bob 2.1s ease-in-out infinite;
 		}
 		.custom-loader-title {
-			margin-bottom: 8px;
-			font-size: clamp(42px, 10vw, 78px);
-			line-height: 0.9;
-			letter-spacing: 0.08em;
+			margin-bottom: 6px;
+			font-size: clamp(24px, 5vw, 38px);
+			line-height: 1;
+			letter-spacing: 0.05em;
 			text-transform: uppercase;
-			text-shadow: 0 0 22px rgba(224, 255, 101, 0.38);
+			font-weight: 900;
+			text-shadow:
+				-3px -3px 0 #000,
+				0 -3px 0 #000,
+				3px -3px 0 #000,
+				-3px 0 0 #000,
+				3px 0 0 #000,
+				-3px 3px 0 #000,
+				0 3px 0 #000,
+				3px 3px 0 #000,
+				0 5px 12px rgba(0, 0, 0, 0.3);
 		}
 		.custom-loader-subtitle {
-			margin-bottom: 24px;
-			color: #d7e99c;
-			font-size: 16px;
-			letter-spacing: 0.12em;
+			margin: 18px 0 0;
+			color: #ffffff;
+			font-size: clamp(24px, 5vw, 38px);
+			line-height: 1;
+			letter-spacing: 0.05em;
 			text-transform: uppercase;
+			font-weight: 900;
+			text-shadow:
+				-3px -3px 0 #000,
+				0 -3px 0 #000,
+				3px -3px 0 #000,
+				-3px 0 0 #000,
+				3px 0 0 #000,
+				-3px 3px 0 #000,
+				0 3px 0 #000,
+				3px 3px 0 #000,
+				0 5px 12px rgba(0, 0, 0, 0.3);
 		}
 		.custom-loader-bar {
-			height: 12px;
+			height: 10px;
 			overflow: hidden;
-			border: 1px solid rgba(246, 255, 214, 0.34);
+			border: 1px solid rgba(199, 185, 177, 0.28);
 			border-radius: 999px;
-			background: rgba(246, 255, 214, 0.12);
+			background: rgba(232, 229, 224, 0.12);
 		}
 		.custom-loader-fill {
 			width: 45%;
 			height: 100%;
 			border-radius: inherit;
-			background: linear-gradient(90deg, #a8ff55, #fff06b, #a8ff55);
+			background: linear-gradient(90deg, #8f3c31, #be5645, #8f3c31);
 			animation: loader-slide 1.2s ease-in-out infinite;
-		}
-		.custom-loader-hint {
-			margin-top: 18px;
-			color: rgba(246, 255, 214, 0.72);
-			font-size: 14px;
 		}
 		.mobile-controls {
 			position: fixed;
@@ -212,13 +230,12 @@
 	<div id="fb-root"></div>
 	<div id="custom-loader" aria-live="polite">
 		<div class="custom-loader-card">
-			<img class="custom-loader-logo" src="loading-logo.png" alt="" />
-			<div class="custom-loader-title">Gribok</div>
-			<div class="custom-loader-subtitle">Loading mycelium</div>
+			<img class="custom-loader-logo" src="miron.png" alt="" />
+			<div class="custom-loader-title">ИГРА ГДЕ ТЫ ТИПА ГРИБОК</div>
 			<div class="custom-loader-bar">
 				<div class="custom-loader-fill"></div>
 			</div>
-			<div class="custom-loader-hint">WASD or arrows to move, Space to jump</div>
+			<div class="custom-loader-subtitle">И ТЫ ПРЫГАЕШЬ НА СУПЕР МАРИО</div>
 		</div>
 	</div>
 	<div class="mobile-controls" aria-label="Touch controls">
@@ -284,17 +301,43 @@
 				100: { keyCode: 39, key: "ArrowRight", code: "ArrowRight" },
 				115: { keyCode: 40, key: "ArrowDown", code: "ArrowDown" }
 			};
+			var codeMap = {
+				KeyA: keyMap[65],
+				KeyW: keyMap[87],
+				KeyD: keyMap[68],
+				KeyS: keyMap[83],
+				Space: keyMap[32],
+				ArrowLeft: keyMap[65],
+				ArrowUp: keyMap[87],
+				ArrowRight: keyMap[68],
+				ArrowDown: keyMap[83]
+			};
+			var keyNameMap = {
+				a: keyMap[65],
+				A: keyMap[65],
+				w: keyMap[87],
+				W: keyMap[87],
+				d: keyMap[68],
+				D: keyMap[68],
+				s: keyMap[83],
+				S: keyMap[83],
+				" ": keyMap[32]
+			};
 
 			function isTypingTarget(target) {
 				var tagName = target && target.tagName;
 				return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT" || target && target.isContentEditable;
 			}
 
+			function resolveMappedKey(event) {
+				return codeMap[event.code] || keyNameMap[event.key] || keyMap[event.which || event.keyCode] || null;
+			}
+
 			var originalFix = jQuery.event.fix;
 
 			jQuery.event.fix = function (originalEvent) {
 				var event = originalFix.call(this, originalEvent);
-				var mapped = keyMap[event.which || event.keyCode];
+				var mapped = resolveMappedKey(event);
 
 				if (mapped && (event.type === "keydown" || event.type === "keyup") && !event.altKey && !event.ctrlKey && !event.metaKey && !isTypingTarget(event.target)) {
 					event.which = mapped.keyCode;
@@ -322,12 +365,12 @@
 				var originalKeyUp = proto.Rh;
 
 				proto.Qh = function (event) {
-					var mapped = keyMap[event.which || event.keyCode];
+					var mapped = resolveMappedKey(event);
 					return originalKeyDown.call(this, mapped ? eventWithMappedKey(event, mapped) : event);
 				};
 
 				proto.Rh = function (event) {
-					var mapped = keyMap[event.which || event.keyCode];
+					var mapped = resolveMappedKey(event);
 					return originalKeyUp.call(this, mapped ? eventWithMappedKey(event, mapped) : event);
 				};
 			}
@@ -339,9 +382,8 @@
 				var originalTick = proto.wp;
 
 				function getMappedKeyCode(event) {
-					var keyCode = event.which || event.keyCode;
-					var mapped = keyMap[keyCode];
-					return mapped ? mapped.keyCode : keyCode;
+					var mapped = resolveMappedKey(event);
+					return mapped ? mapped.keyCode : (event.which || event.keyCode);
 				}
 
 				function isJumpKey(event) {
